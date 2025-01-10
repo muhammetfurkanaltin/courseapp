@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse ,HttpResponseRedirect, HttpResponseNotFound
 from django.urls import reverse
-from datetime import date
+from datetime import date,datetime
 
 data = {
     "programlama" :"programlama kategorisne ait kurslar",
@@ -13,43 +13,52 @@ db ={
         {
             "title":"python",
             "description":"python kursu açıklaması",
-            "imageUrl": "https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png",
+            "imageUrl": "1.jpg",
             "slug":"python-kursu",
-            "date": date(2022,8,8),
-            "is_active":True
+            "date": datetime.now(),
+            "isActive":True,
+            "isUpdated":False
         },
         {
             "title":"javascript kursu",
             "description":"javascript kursu açıklaması",
-            "imageUrl": "https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png",
+            "imageUrl": "2.jpg",
             "slug":"javascript-kursu",
             "date": date(2022,9,9),
-            "is_active":False
+            "isActive":True,
+            "isUpdated":True
 
         },
         {
             "title":"web gelistirme kursu",
             "description":"web gelistirme kursu açıklaması",
-            "imageUrl": "https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png",
+            "imageUrl": "1.jpg",
             "slug":"web-gelistirme-kursu",
             "date": date(2022,10,10),
-            "is_active":False
+            "isActive":False,
+            "isUpdated":False
         },
     ],
-    "categories":["programlama","web-gelistirme","mobil"]
+    "categories":[
+        {"id":1,"name":"programlama", "slug":"programlama"},
+        {"id":2,"name":"mobil-Gelistirme", "slug":"mobil"},
+        {"id":3,"name":"web-Gelistirme", "slug":"web-gelistirme"},
         
-
+    ]
 }
 
 
 
 def index(request):
+    #list comprehension
+    kurslar = [course for course in db['courses'] if course['isActive'] == True]
     
-    category_list = list(data.keys())
+    kategoriler = db['categories']
 
         
     return render(request, 'courses/index.html', {
-        'catogories':category_list,
+        'categories':kategoriler,
+        'courses': kurslar
     })
 
 def details(request,kurs_adi):
