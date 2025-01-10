@@ -1,19 +1,20 @@
-from django.shortcuts import render
-from django.http import HttpResponse ,HttpResponseRedirect, HttpResponseNotFound
+from django.shortcuts import get_object_or_404, render
+from django.http import Http404, HttpResponse ,HttpResponseRedirect, HttpResponseNotFound
 from django.urls import reverse
 from datetime import date,datetime
+from .models import Course , Category
 
 data = {
     "programlama" :"programlama kategorisne ait kurslar",
     "web-gelistirme" : "web gelistirme kategorisne ait kurslar",
-    "mobil" :"mobil kategorisne ait kurslar"
+    "mobil-uygulamalar" :"mobil kategorisne ait kurslar"
 }
 db ={
     "courses":[
         {
             "title":"python",
             "description":"python kursu açıklaması",
-            "imageUrl": "1.jpg",
+            "imagUrl": "1.jpg",
             "slug":"python-kursu",
             "date": datetime.now(),
             "isActive":True,
@@ -22,7 +23,7 @@ db ={
         {
             "title":"javascript kursu",
             "description":"javascript kursu açıklaması",
-            "imageUrl": "2.jpg",
+            "imagUrl": "2.jpg",
             "slug":"javascript-kursu",
             "date": date(2022,9,9),
             "isActive":True,
@@ -32,7 +33,7 @@ db ={
         {
             "title":"web gelistirme kursu",
             "description":"web gelistirme kursu açıklaması",
-            "imageUrl": "1.jpg",
+            "imagUrl": "1.jpg",
             "slug":"web-gelistirme-kursu",
             "date": date(2022,10,10),
             "isActive":False,
@@ -41,7 +42,7 @@ db ={
     ],
     "categories":[
         {"id":1,"name":"programlama", "slug":"programlama"},
-        {"id":2,"name":"mobil-Gelistirme", "slug":"mobil"},
+        {"id":2,"name":"mobil-uygulamalar", "slug":"mobil-uygulamalar"},
         {"id":3,"name":"web-Gelistirme", "slug":"web-gelistirme"},
         
     ]
@@ -51,9 +52,9 @@ db ={
 
 def index(request):
     #list comprehension
-    kurslar = [course for course in db['courses'] if course['isActive'] == True]
+    kurslar = Course.objects.filter(isActive=1)
     
-    kategoriler = db['categories']
+    kategoriler = Category.objects.all()
 
         
     return render(request, 'courses/index.html', {
@@ -61,8 +62,17 @@ def index(request):
         'courses': kurslar
     })
 
-def details(request,kurs_adi):
-    return HttpResponse(f'{kurs_adi} Detaylar Listesi')
+def details(request,kurs_id):
+    # try:
+    #     course = Course.objects.get(pk=kurs_id)
+    # except:
+    #     raise Http404()
+
+    course = get_object_or_404(Course, pk=kurs_id)
+    context = {
+        'course': course
+    }
+    return render(request, 'courses/details.html',context)
 
 def getCoursesByCategory(request, category_name):
     try:
