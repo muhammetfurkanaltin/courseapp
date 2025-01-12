@@ -1,0 +1,52 @@
+{% extends "layout.html" %}
+{% load static %}
+{%block css %}
+    <link rel="stylesheet" href="{% static 'courses/css/style.css' %}">
+{% endblock css %}  
+
+{% block page_title %}
+    kurslar
+{% endblock page_title %}
+
+{% block content %}
+        <div class="container mt-3">
+        <div class="row">
+            <div class="col-3">
+                {% include 'courses/partials/_categories.html' %}
+            </div>
+            <div class="col-9">
+                {% if page_obj.object_list|length == 0  %}
+                    <div class='alert alert-warning'>Kurs Bulunamadı</div>
+                {% endif %}
+                {% for course in page_obj %}
+                        {% include 'courses/partials/_course.html' %}
+                {%endfor%}
+                <nav aria-label="Page navigation example">
+                    <ul class="pagination">
+                        {% if page_obj.has_previous %}
+                            <li class="page-item"><a class="page-link" href="?page={{page_obj.previous_page_number }}"> Geri</a></li>
+                        {% else %}
+                            <li class="page-item disabled"><a class="page-link" href="#"> Geri </a></li>
+                        {% endif %}
+                            {% for i in page_obj.paginator.page_range %}
+                                {% if page_obj.number == i %}
+                                    <li class="page-item active"><a class="page-link" href="#">{{i}}</a></li>
+                                {% else %}
+                                    <li class="page-item"><a class="page-link" href="?page={{i}}">{{i}}</a></li>
+                                {% endif %}
+                            {% endfor %}
+                        {% if page_obj.has_next %}
+                            <li class="page-item"><a class="page-link" href="?page={{page_obj.next_page_number}}"> İleri </a></li>
+                        {% else %}
+                            <li class="page-item disabled"><a class="page-link" href="#"> İleri </a></li>
+                        {% endif %}
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </div>
+{% endblock content %}
+
+{% block js %}
+    <script src="{% static 'courses/js/script.js' %}"></script>
+{% endblock js %}

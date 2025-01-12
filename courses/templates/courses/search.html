@@ -18,7 +18,7 @@
                 {% if courses|length == 0  %}
                     <div class='alert alert-warning'>Kurs Bulunamadı</div>
                 {% endif %}
-                {% for course in courses %}
+                {%for course in courses %}
                         {% include 'courses/partials/_course.html' %}
                 {%endfor%}
             </div>
