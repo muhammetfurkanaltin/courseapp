@@ -1,0 +1,51 @@
+{% extends "layout.html" %}
+{% load static %}
+{%block css %}
+    <link rel="stylesheet" href="{% static 'courses/css/style.css' %}">
+{% endblock css %}  
+
+{% block page_title %}
+    Kurs Ekle
+{% endblock page_title %}
+
+{% block content %}
+        <div class="container mt-3">
+        <div class="row">
+            <div class="col-12">
+                <form action="{% url 'create_course' %}" method="POST" novalidate>
+                {% csrf_token %}
+
+                {% for field in form %}
+                <div class="mb-3 {% if field.errors %} invalid {% endif %}">
+                    {% if field.errors %}<div class="alert alert-danger">{{ field.errors }}</div>{% endif %}
+                        <label class="form-label" for="{{ field.id_for_label }}">{{ field.label }}</label>
+                    {{ field }}
+                </div>
+                {% endfor %}
+                
+                {% comment %} <div class="mb-3 {% if form.title.errors %}invalid{% endif %}">
+                    {{ form.title.errors }}
+                    <label class="form-label" for="{{form.title.id_for_label}}">Title</label>
+                    {{form.title}}
+                </div>
+                <div class="mb-3 {% if form.description.errors %}invalid{% endif %}">
+                    {{ form.description.errors }}
+                    <label class="form-label" for="{{form.description.id_for_label}}">description</label>
+                    {{form.description}}
+                </div>
+                <div class="mb-3 {% if form.imagUrl.errors %}invalid{% endif %}">
+                    {{ form.imagUrl.errors }}
+                    <label class="form-label" for="{{form.imagUrl.id_for_label}}">imagUrl</label>
+                    {{form.imagUrl}}
+                </div>
+                <div class="mb-3 {% if form.slug.errors %}invalid{% endif %}">
+                    {{ form.slug.errors }}
+                    <label class="form-label" for="{{form.slug.id_for_label}}">slug</label>
+                    {{form.slug}}
+                </div> {% endcomment %}
+                <button type="submit" class="btn btn-primary">Kurs Ekle</button>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock content %}

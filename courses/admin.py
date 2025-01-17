@@ -1,6 +1,15 @@
 from django.contrib import admin
 from .models import Course, Category
 # Register your models here.
+
+@admin.register(Category)
+class CategoryAdmin(admin.ModelAdmin):
+    list_display = ("name","slug","course_count")
+    prepopulated_fields = {"slug":("name",)}
+
+    def course_count(self,obj):
+        return obj.course_set.count()
+
 @admin.register(Course)
 class CourseAdmin(admin.ModelAdmin):
     list_display = ("title","isActive","isHome","slug","category_list",)
@@ -17,13 +26,6 @@ class CourseAdmin(admin.ModelAdmin):
         return html
 
 
-@admin.register(Category)
-class CategoryAdmin(admin.ModelAdmin):
-    list_display = ("name","slug","course_count")
-    prepopulated_fields = {"slug":("name",)}
-
-    def course_count(self,obj):
-        return obj.course_set.count()
 
 
 
