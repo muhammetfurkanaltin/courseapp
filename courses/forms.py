@@ -18,13 +18,12 @@ from .models import Course
 class CourseCreateForm(forms.ModelForm):    # Yontem 2
     class Meta:
         model = Course
-        fields = ['title','description','imagUrl','slug']
+        fields = ['title','description','image','slug']
         labels = {'title':'Kurs Adı'
                   }
         widgets = {
             'title':forms.TextInput(attrs={'class':'form-control'}),
             'description':forms.Textarea(attrs={'class':'form-control'}),
-            'imagUrl':forms.TextInput(attrs={'class':'form-control'}),
             'slug':forms.TextInput(attrs={'class':'form-control'}),
         }
         error_messages = {
@@ -41,13 +40,12 @@ class CourseCreateForm(forms.ModelForm):    # Yontem 2
 class CourseEditForm(forms.ModelForm):    # Yontem 2
     class Meta:
         model = Course
-        fields = ['title','description','imagUrl','slug']
+        fields = ['title','description','image','slug']
         labels = {'title':'Kurs Adı'
                   }
         widgets = {
             'title':forms.TextInput(attrs={'class':'form-control'}),
             'description':forms.Textarea(attrs={'class':'form-control'}),
-            'imagUrl':forms.TextInput(attrs={'class':'form-control'}),
             'slug':forms.TextInput(attrs={'class':'form-control'}),
         }
         error_messages = {

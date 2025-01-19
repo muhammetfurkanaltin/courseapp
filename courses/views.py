@@ -19,7 +19,7 @@ def index(request):
 
 def create_course(request):
     if request.method == "POST":
-        form = CourseCreateForm(request.POST)
+        form = CourseCreateForm(request.POST, request.FILES)
         if form.is_valid():
             # kurs = Course(
             #     title = form.cleaned_data["title"],
@@ -58,9 +58,10 @@ def course_del(request,id):
 
 def upload(request):
     if request.method == "POST":
-        form = UploadForm(request.POST, request.FILES)
+        form = UploadForm(request.POST, request.FILES,request.FILES)
         if form.is_valid():
-            model = UploadForm(image = request.FILES['image'])
+            model = UploadModel()
+            model.image = request.FILES['image']
             model.save()
             return render(request, 'courses/success.html')
     else:
