@@ -1,7 +1,9 @@
 from django.shortcuts import get_object_or_404, render , redirect
-from .models import Course , Category
+from .models import Course , Category, UploadModel
 from django.core.paginator import Paginator
-from .forms import CourseCreateForm, CourseEditForm
+from .forms import CourseCreateForm, CourseEditForm, UploadForm
+import os
+import random
 
 def index(request):
     #list comprehension
@@ -31,9 +33,11 @@ def create_course(request):
     else:
         form = CourseCreateForm()
     return render(request, 'courses/create_course.html', {'form':form})
+
 def course_list(request):
     kurslar = Course.objects.all()
     return render(request, 'courses/course-list.html', {'courses':kurslar})
+
 def course_edit(request,id):
     course = get_object_or_404(Course, pk=id)
     form = CourseEditForm(instance=course)
@@ -44,18 +48,25 @@ def course_edit(request,id):
     else:
         form = CourseEditForm(instance=course)
     return render(request, 'courses/course_edit.html', {'form':form})
+
 def course_del(request,id):
     course = get_object_or_404(Course, pk=id)
     if request.method == "POST":
         course.delete()
         return redirect('course_list')
     return render(request, 'courses/course_del.html', )
+
 def upload(request):
     if request.method == "POST":
-        uploaded_image = request.FILES["image"]
-        print(uploaded_image)
-        return render(request, 'courses/success.html')
-    return render(request, 'courses/upload.html')
+        form = UploadForm(request.POST, request.FILES)
+        if form.is_valid():
+            model = UploadForm(image = request.FILES['image'])
+            model.save()
+            return render(request, 'courses/success.html')
+    else:
+        form = UploadForm()
+    return render(request, 'courses/upload.html', {'form':form})
+
 
 def details(request,slug):
 

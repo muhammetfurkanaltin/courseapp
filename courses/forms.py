@@ -59,4 +59,6 @@ class CourseEditForm(forms.ModelForm):    # Yontem 2
             }
         }
 
+class UploadForm(forms.Form):
+    image = forms.ImageField()
     
