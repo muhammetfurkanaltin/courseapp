@@ -1,0 +1,45 @@
+{% extends "layout.html" %}
+{% load static %}
+
+
+{% block page_title %}
+    Register
+{% endblock page_title %}
+
+{% block content %}
+        <div class="container mt-3">
+        <div class="row">
+            <div class="col-12">
+                <h1>Register</h1>
+                <hr>
+                {% if error %}
+                    <div class="alert alert-danger" role="alert">
+                        {{ error }}
+                    </div>
+                {% endif %}
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label for="username" class="form-label">Username</label>
+                        <input type="text" class="form-control" id="username" name="username" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Email</label>
+                        <input type="email" class="form-control" id="email" name="email" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="password" class="form-label">Password</label>
+                        <input type="password" class="form-control" id="password" name="password" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="repassword" class="form-label">Re-Password</label>
+                        <input type="password" class="form-control" id="repassword" name="repassword" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Register</button>
+
+                </form>
+
+            </div>
+        </div>
+    </div>
+{% endblock content %}
